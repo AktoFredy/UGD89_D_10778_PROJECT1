@@ -83,11 +83,7 @@ class MainActivity : AppCompatActivity() {
                         mCamera?.stopPreview();
                     }
                     //NB: if you don't release the current camera before switching, you app will crash
-                    try {
-                        mCamera = Camera.open(currentCameraId)
-                    }catch (e: IOException){
-                        Log.d("Error", "Failed to get Camera" + e.message)
-                    }
+                    mCamera?.release();
 
                     //swap the id of the camera to be used
                     if(currentCameraId == CAMERA_FACING_BACK){
@@ -96,7 +92,11 @@ class MainActivity : AppCompatActivity() {
                     else {
                         currentCameraId = CAMERA_FACING_BACK;
                     }
-                    mCamera = Camera.open(currentCameraId);
+                    try {
+                        mCamera = Camera.open(currentCameraId)
+                    }catch (e: IOException){
+                        Log.d("Error", "Failed to get Camera" + e.message)
+                    }
 
 //                    setCameraDisplayOrientation(, currentCameraId, camera);
 //                    try {
